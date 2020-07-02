@@ -125,6 +125,12 @@ function nodeToPath(node) {
   return path;
 }
 
+class Queue extends Stack {
+  pop() {
+    return this.container.shift();
+  }
+}
+
 let _exports = {
   compare: compare,
   linearContains: linearContains,
@@ -132,7 +138,8 @@ let _exports = {
   Stack: Stack,
   Node: Node,
   dfs: dfs,
-  nodeToPath: nodeToPath
+  nodeToPath: nodeToPath,
+  Queue: Queue
 };
 
 if (typeof window === 'undefined') {
