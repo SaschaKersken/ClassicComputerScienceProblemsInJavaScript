@@ -1,5 +1,9 @@
 util = {
   out: function(data) {
-    document.writeln(data);
+    if (typeof data === 'object') {
+      document.writeln(JSON.stringify(data));
+    } else {
+      document.writeln(data);
+    }
   }
 };

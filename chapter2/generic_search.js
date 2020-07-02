@@ -87,6 +87,18 @@ class Stack {
   }
 }
 
+function find(set, item) {
+  if (typeof item.equal === 'function') {
+    for (let i of set) {
+      if (item.equal(i)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return set.indexOf(item) > -1;
+}
+
 function dfs(initial, goalTest, successors) {
   // frontier is where we've yet to go
   let frontier = new Stack();
@@ -104,7 +116,7 @@ function dfs(initial, goalTest, successors) {
     }
     // Check where we can go next and haven't explored
     for (let child of successors(currentState)) {
-      if (explored.indexOf(child) > -1) {
+      if (find(explored, child)) {
         continue; // skip children we already explored
       }
       explored.push(child);
@@ -148,7 +160,7 @@ function bfs(initial, goalTest, successors) {
     }
     // Check where we can go next and haven't explored
     for (let child of successors(currentState)) {
-      if (explored.indexOf(child) > -1) {
+      if (find(explored, child)) {
         continue; // skip children we already explored
       }
       explored.push(child);
@@ -191,7 +203,6 @@ function astar(initial, goalTest, successors, heuristic) {
     }
     // Check where we can go next and haven't explored
     for (let child of successors(currentState)) {
-console.log('SEARCHING', child);
       let newCost = currentNode.cost + 1 // 1 assumes a grid, need a cost function for more sophisticated apps
       if (Object.keys(explored).indexOf(hash(child)) > -1 || explored[hash(child)] > newCost) {
         continue; // skip children we already explored
