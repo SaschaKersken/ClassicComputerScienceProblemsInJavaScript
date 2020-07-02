@@ -131,6 +131,78 @@ class Queue extends Stack {
   }
 }
 
+function bfs(initial, goalTest, successors) {
+  // frontier is where we've yet to go
+  let frontier = new Queue();
+  frontier.push(new Node(initial, null));
+  // explored is where we've been
+  let explored = [initial];
+
+  // keep going while there is more to explore
+  while (!frontier.empty()) {
+    let currentNode = frontier.pop();
+    let currentState = currentNode.state;
+    // if we found the goal, we're done
+    if (goalTest(currentState)) {
+      return currentNode;
+    }
+    // Check where we can go next and haven't explored
+    for (let child of successors(currentState)) {
+      if (explored.indexOf(child) > -1) {
+        continue; // skip children we already explored
+      }
+      explored.push(child);
+      frontier.push(new Node(child, currentNode));
+    }
+  }
+  return null; // went through everything and never found a goal
+}
+
+class PriorityQueue extends Queue {
+  push(item) {
+    this.container.push(item);
+    if (typeof item.comare === 'function') {
+      this.container.sort((a, b) => a.compare(b));
+    } else {
+      this.container.sort((a, b) => a - b);
+    }
+  }
+}
+
+function hash(value) {
+  return JSON.stringify(value);
+}
+
+function astar(initial, goalTest, successors, heuristic) {
+  // frontier is where we've yet to go
+  let frontier = new Queue();
+  frontier.push(new Node(initial, null, 0.0, heuristic));
+  // explored is where we've been
+  let explored = {};
+  explored[hash(initial)] = 0.0;
+
+  // keep going while there is more to explore
+  while (!frontier.empty()) {
+    let currentNode = frontier.pop();
+    let currentState = currentNode.state;
+    // if we found the goal, we're done
+    if (goalTest(currentState)) {
+      return currentNode;
+    }
+    // Check where we can go next and haven't explored
+    for (let child of successors(currentState)) {
+console.log('SEARCHING', child);
+      let newCost = currentNode.cost + 1 // 1 assumes a grid, need a cost function for more sophisticated apps
+      if (Object.keys(explored).indexOf(hash(child)) > -1 || explored[hash(child)] > newCost) {
+        continue; // skip children we already explored
+      }
+      explored[hash(child)] = newCost;
+      frontier.push(new Node(child, currentNode));
+    }
+  }
+  return null; // went through everything and never found a goal
+}
+
 let _exports = {
   compare: compare,
   linearContains: linearContains,
@@ -139,7 +211,10 @@ let _exports = {
   Node: Node,
   dfs: dfs,
   nodeToPath: nodeToPath,
-  Queue: Queue
+  Queue: Queue,
+  bfs: bfs,
+  PriorityQueue: PriorityQueue,
+  astar: astar
 };
 
 if (typeof window === 'undefined') {

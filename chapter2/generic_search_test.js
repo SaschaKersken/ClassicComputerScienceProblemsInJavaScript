@@ -69,3 +69,27 @@ util.out(q.pop());
 util.out(q.pop());
 util.out(q.pop());
 util.out(q.pop());
+goalNode = gs.bfs(
+  1,
+  function(v) { return v >= 10; },
+  function(v) { return [0 - v, v + 1]; }
+);
+util.out(goalNode);
+util.out(gs.nodeToPath(goalNode));
+let pq1 = new gs.PriorityQueue();
+pq1.push(42);
+pq1.push(99);
+pq1.push(23);
+util.out(pq1);
+util.out(pq1.pop());
+util.out(pq1.pop());
+util.out(pq1.pop());
+util.out(pq1.pop());
+goalNode = gs.astar(
+  1,
+  (v) => v >= 10,
+  (v) => [0 - v, v + 1],
+  (v) => Math.abs(10 - v)
+);
+util.out(goalNode);
+util.out(gs.nodeToPath(goalNode));
