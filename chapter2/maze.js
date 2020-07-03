@@ -105,6 +105,22 @@ class Maze {
   }
 }
 
+function euclideanDistance(goal) {
+  return function(ml) {
+    let xdist = ml.column - goal.column;
+    let ydist = ml.row - goal.row;
+    return Math.sqrt((xdist * xdist) + (ydist * ydist));
+  };
+}
+
+function manhattanDistance(goal) {
+  return function(ml) {
+    let xdist = Math.abs(ml.column - goal.column);
+    let ydist = Math.abs(ml.row - goal.row);
+    return (xdist + ydist);
+  };
+}
+
 // Test DFS
 let m = new Maze();
 util.out(m.toString());
@@ -127,4 +143,16 @@ if (solution2 == null) {
   m.mark(path2);
   util.out(m.toString());
   m.clear(path2);
+}
+
+// Test A*
+distance = manhattanDistance(m.goal);
+let solution3 = gs.astar(m.start, (ml) => m.goalTest(ml), (ml) => m.successors(ml), (ml) => distance(ml));
+if (solution3 == null) {
+  util.out("No solution found using A*!");
+} else {
+  let path3 = gs.nodeToPath(solution3);
+  m.mark(path3);
+  util.out(m.toString());
+  m.clear(path3);
 }

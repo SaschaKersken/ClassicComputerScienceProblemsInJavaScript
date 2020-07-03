@@ -173,7 +173,7 @@ function bfs(initial, goalTest, successors) {
 class PriorityQueue extends Queue {
   push(item) {
     this.container.push(item);
-    if (typeof item.comare === 'function') {
+    if (typeof item.compare === 'function') {
       this.container.sort((a, b) => a.compare(b));
     } else {
       this.container.sort((a, b) => a - b);
@@ -187,8 +187,8 @@ function hash(value) {
 
 function astar(initial, goalTest, successors, heuristic) {
   // frontier is where we've yet to go
-  let frontier = new Queue();
-  frontier.push(new Node(initial, null, 0.0, heuristic));
+  let frontier = new PriorityQueue();
+  frontier.push(new Node(initial, null, 0.0, heuristic(initial)));
   // explored is where we've been
   let explored = {};
   explored[hash(initial)] = 0.0;
@@ -203,12 +203,11 @@ function astar(initial, goalTest, successors, heuristic) {
     }
     // Check where we can go next and haven't explored
     for (let child of successors(currentState)) {
-      let newCost = currentNode.cost + 1 // 1 assumes a grid, need a cost function for more sophisticated apps
-      if (Object.keys(explored).indexOf(hash(child)) > -1 || explored[hash(child)] > newCost) {
-        continue; // skip children we already explored
+      let newCost = currentNode.cost + 1; // 1 assumes a grid, need a cost function for more sophisticated apps
+      if (Object.keys(explored).indexOf(hash(child)) == -1 || explored[hash(child)] > newCost) {
+        explored[hash(child)] = newCost;
+        frontier.push(new Node(child, currentNode, newCost, heuristic(child)));
       }
-      explored[hash(child)] = newCost;
-      frontier.push(new Node(child, currentNode));
     }
   }
   return null; // went through everything and never found a goal
