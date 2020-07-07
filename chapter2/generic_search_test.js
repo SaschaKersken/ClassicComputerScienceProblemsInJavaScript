@@ -76,15 +76,14 @@ goalNode = gs.bfs(
 );
 util.out(goalNode);
 util.out(gs.nodeToPath(goalNode));
-let pq1 = new gs.PriorityQueue();
-pq1.push(42);
-pq1.push(99);
-pq1.push(23);
-util.out(pq1);
-util.out(pq1.pop());
-util.out(pq1.pop());
-util.out(pq1.pop());
-util.out(pq1.pop());
+let pq = new gs.PriorityQueue();
+pq.push(new gs.Node('A', null, 2, 2));
+pq.push(new gs.Node('B', null, 1, 1));
+pq.push(new gs.Node('C', null, 3, 3));
+util.out(pq.pop());
+util.out(pq.pop());
+util.out(pq.pop());
+util.out(pq.pop());
 goalNode = gs.astar(
   1,
   (v) => v >= 10,

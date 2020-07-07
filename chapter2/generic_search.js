@@ -170,13 +170,64 @@ function bfs(initial, goalTest, successors) {
   return null; // went through everything and never found a goal
 }
 
-class PriorityQueue extends Queue {
-  push(item) {
-    this.container.push(item);
-    if (typeof item.compare === 'function') {
-      this.container.sort((a, b) => a.compare(b));
-    } else {
-      this.container.sort((a, b) => a - b);
+class PriorityQueue {
+  constructor() {
+    this.heap = [];
+  }
+
+  empty() {
+    return this.heap.length == 0;
+  }
+
+  push(node) {
+    this.heap.push(node);
+    let index = this.heap.length - 1;
+    while (index !== 0 && this.heap[index].compare(this.heap[this.nParent(index)]) < 0) {
+      this.swap(index, this.nParent(index));
+      index = this.nParent(index);
+    }
+  }
+
+  pop() {
+    let root = this.heap.shift();
+    this.heap.unshift(this.heap[this.heap.length - 1]);
+    this.heap.pop();
+    this.heapify(0);
+    return root;
+  }
+
+  // Helper methods
+  leftChild(index) {
+    return index * 2 + 1;
+  }
+
+  rightChild(index) {
+    return index * 2 + 2;
+  }
+
+  nParent(index) {
+    return Math.floor((index - 1) / 2);
+  }
+
+  swap(index1, index2) {
+    let tmp = this.heap[index1];
+    this.heap[index1] = this.heap[index2];
+    this.heap[index2] = tmp;
+  }
+
+  heapify(index) {
+    let left = this.leftChild(index);
+    let right = this.rightChild(index);
+    let smallest = index;
+    if (left < this.heap.length && this.heap[smallest].compare(this.heap[left]) > 0) {
+      smallest = left;
+    }
+    if (right < this.heap.length && this.heap[smallest].compare(this.heap[right]) < 0) {
+      smallest = right;
+    }
+    if (smallest != index) {
+      this.swap(smallest, index);
+      this.heapify(smallest);
     }
   }
 }
