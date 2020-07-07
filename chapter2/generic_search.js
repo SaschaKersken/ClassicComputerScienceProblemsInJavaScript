@@ -190,7 +190,7 @@ class PriorityQueue {
 
   pop() {
     let root = this.heap.shift();
-    this.heap.unshift(this.heap[this.heap.length - 1]);
+    this.heap.unshift(this.heap[this.heap.length - 1]);
     this.heap.pop();
     this.heapify(0);
     return root;
