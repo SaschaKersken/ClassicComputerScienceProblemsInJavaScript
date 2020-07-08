@@ -19,17 +19,17 @@ class CSP {
     this.variables = variables; // variables to be constrained
     this.domains = domains; // domain of each variable
     this.constraints = {};
-    for (variable of this.variables) {
+    for (let variable of this.variables) {
       this.constraints[variable] = [];
-      if (Object.keys(this.domains).indexOf(variable) == -1) {
+      if (!member(Object.keys(this.domains), variable)) {
         throw "Every variable should have a domain assigned to it.";
       }
     }
   }
 
   addConstraint(constraint) {
-    for (variable of constraint.variables) {
-      if (this.variables.indexOf(variable) == -1) {
+    for (let variable of constraint.variables) {
+      if (!member(this.variables, variable)) {
         throw "Variable in constraint not in CSP";
       } else {
         this.constraints[variable].push(constraint);
@@ -49,7 +49,7 @@ class CSP {
   }
 
   backtrackingSearch(assignment) {
-    if (assignment == null) {
+    if (!assignment) {
       assignment = {};
     }
     // assignment is complete if every variable is assigned (our base case)
@@ -58,8 +58,7 @@ class CSP {
     }
 
     // get all variables in the CSP but not in the assignment
-    let unassigned = this.variables.filter((v) => Object.keys(assignment).indexOf(v) == -1);
-
+    let unassigned = this.variables.filter((v) => !member(Object.keys(assignment), v));
     // get every possible domain value of the first unassigned variable
     let first = unassigned[0];
     for (let value of this.domains[first]) {
@@ -79,9 +78,30 @@ class CSP {
   }
 }
 
+// array membership helper function
+function member(array, element) {
+  if (array.length == 0) {
+    return false;
+  }
+  if (typeof array[0] == typeof element) {
+    return array.indexOf(element) > -1;
+  }
+  if (typeof array[0] == 'string' && typeof element == 'number') {
+    return array.indexOf(element.toString()) > -1;
+  }
+  for (let item of array) {
+    if (element == item) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 let _exports = {
   Constraint: Constraint,
-  CSP: CSP
+  CSP: CSP,
+  member: member
 };
 
 if (typeof window === 'undefined') {
