@@ -222,7 +222,7 @@ class PriorityQueue {
     if (left < this.heap.length && this.heap[smallest].compare(this.heap[left]) > 0) {
       smallest = left;
     }
-    if (right < this.heap.length && this.heap[smallest].compare(this.heap[right]) < 0) {
+    if (right < this.heap.length && this.heap[smallest].compare(this.heap[right]) > 0) {
       smallest = right;
     }
     if (smallest != index) {
@@ -264,7 +264,7 @@ function astar(initial, goalTest, successors, heuristic) {
   return null; // went through everything and never found a goal
 }
 
-let _exports = {
+let _gsExports = {
   compare: compare,
   linearContains: linearContains,
   binaryContains: binaryContains,
@@ -279,7 +279,7 @@ let _exports = {
 };
 
 if (typeof window === 'undefined') {
-  module.exports = _exports;
+  module.exports = _gsExports;
 } else {
-  gs = _exports;
+  gs = _gsExports;
 }

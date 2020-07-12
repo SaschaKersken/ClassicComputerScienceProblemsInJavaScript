@@ -98,15 +98,15 @@ function member(array, element) {
 }
 
 
-let _exports = {
+let _cspExports = {
   Constraint: Constraint,
   CSP: CSP,
   member: member
 };
 
 if (typeof window === 'undefined') {
-  module.exports = _exports;
+  module.exports = _cspExports;
 } else {
-  csp = _exports;
+  csp = _cspExports;
 }
 
