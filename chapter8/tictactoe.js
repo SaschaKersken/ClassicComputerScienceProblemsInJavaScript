@@ -41,6 +41,7 @@ class TTTBoard {
     let tempPosition = this.position.slice();
     tempPosition[location] = this.turn;
     return new TTTBoard(tempPosition, this.turn.opposite());
+    return result;
   }
 
   legalMoves() {
@@ -98,5 +99,5 @@ let _ttExports = {
 if (typeof window === 'undefined') {
   module.exports = _ttExports;
 } else {
-  tt = __ttExports;
+  tt = _ttExports;
 }
