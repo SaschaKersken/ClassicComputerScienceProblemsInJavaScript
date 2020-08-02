@@ -1,6 +1,6 @@
 // Find the best possible outcome for original player
 function minimax(board, maximizing, originalPlayer, maxDepth) {
-  if (!maxDepth) {
+  if (maxDepth === undefined) {
     maxDepth = 8;
   }
   // Base case - terminal position or maximum depth reached
@@ -27,7 +27,7 @@ function minimax(board, maximizing, originalPlayer, maxDepth) {
 }
 
 function alphabeta(board, maximizing, originalPlayer, maxDepth, alpha, beta) {
-  if (!maxDepth) {
+  if (maxDepth === undefined) {
     maxDepth = 8;
   }
   if (!alpha) {
@@ -66,7 +66,7 @@ function alphabeta(board, maximizing, originalPlayer, maxDepth, alpha, beta) {
 // Find the best possible move in the current position
 // looking up to maxDepth ahead
 function findBestMove(board, maxDepth) {
-  if (!maxDepth) {
+  if (maxDepth === undefined) {
     maxDepth = 8;
   }
   let bestEval = -Infinity;
